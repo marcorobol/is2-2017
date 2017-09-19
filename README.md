@@ -1,9 +1,9 @@
-# 2017-unitn-is2
-Laboratorio di Ingegneria del Software 2
+# Laboratorio di Ingegneria del Software 2
+DISI - University of Trento
 
 Questo repository contiene dei piccoli esempi con difficolta' progressiva utili allo sviluppo di applicazioni web con Node.js, MongoDB e altro.
 
-Software necessario:
+## Software necessario:
 - Modern browser (e.g. Chrome)
 - REST api tester (e.g. Postman)
 - Text editor (e.g. Brackets)
@@ -11,7 +11,7 @@ Software necessario:
 - Node.js
 - Heroku CLI
 
-Servizi online utilizzati:
+## Servizi online utilizzati:
 - Heroku
 - mLab
 - GitHub
