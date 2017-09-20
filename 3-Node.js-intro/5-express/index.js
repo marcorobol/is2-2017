@@ -1,3 +1,5 @@
+/*globals require, console, process */
+
 //Libraries
 var http = require('http');
 //general lib
@@ -8,56 +10,42 @@ var url = require('url');
 var util = require('util');
 
 //instantiate express
-var app = express(); 
+var app = express();
 
 //listen in a specific port
 app.set('port', (process.env.PORT || 1337));
 
 
-//create a server
-app.get('/', function(request, response) 
-{
+//handle get request on /
+app.get('/', function (request, response) {
+    var url_parts;
+    
 	response.writeHead(200, {'Content-Type': 'text/html'});
-
-    //get GET
-    var url_parts = url.parse(request.url, true);
-    var getVar = url_parts.query; //aggancio un nuovo attributo
-	
-    var text = 'GET: ' +util.inspect(getVar);
-
-    response.end(text);
+    
+    //parse URL string into an object
+    url_parts = url.parse(request.url, true); //set 2nd paramenter to true to parse also properties into query field
+    
+    response.end('GET: ' + util.inspect(url_parts.query));
   	
 });
 
-//create a server
-app.post('/', function(request, response) 
-{
-	var text = '';
+
+//handle post request on /
+app.post('/', function (request, response) {
+	var url_parts = '';
+    
 	response.writeHead(200, {'Content-Type': 'text/html'});
-
-    var postVar='';
-	
-    var body = '';			
-    request.on('data', function(data) 
-    {
-        body += data;
-    });
-
-    request.on('end', function() 
-    {
-        postVar = qs.parse(body);
-    });
-
-	
-    text = text + 'POST: ' + util.inspect(postVar);
-    text = text + "<br> <br>";
-
-    response.end(text);
-  	
+    url_parts = url.parse(request.url, true);
+    
+    if(url_parts.query.username == 'test')
+        response.end('POST: ' + util.inspect(url_parts.query));
+    else
+        response.end('invalid username');
 });
- 
+
+
 //listen in a specific port
 app.listen(1337, '127.0.0.1');
- 
+
 //check status
 console.log('Server running at http://127.0.0.1:1337/');
