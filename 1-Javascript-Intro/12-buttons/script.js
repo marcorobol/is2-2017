@@ -1,14 +1,15 @@
-var car = {
-    type:"Fiat", 
-    model:"500", 
-    color:"white",
-    description : function() {
+function Car(type, model, color) {
+    this.type = type;
+    this.model = model;
+    this.color = color;
+    this.description = function() {
         return this.color + ", " + this.model + ", " + this.type;
-    }
-};
+    };
+}
 
+var fiat500bianca = new Car('Fiat', '500', 'white');
+var fiat500rossa = new Car('Fiat', '500', 'red');
 
-function showCar()
-{
-    alert(car.description());
-};
+function showCar() {
+    alert(fiat500bianca.description());
+}
