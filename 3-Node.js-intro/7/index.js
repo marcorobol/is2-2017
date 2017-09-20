@@ -8,8 +8,10 @@ var app = express();
 
 //POST
 var bodyParser = require('body-parser');
-app.use(bodyParser.urlencoded({ extended: false }));
 
+app.use(bodyParser.urlencoded({ extended: false }));
+//JSON post
+app.use(bodyParser.json());
 
 app.set('port', (process.env.PORT || 1337));
 
@@ -18,10 +20,14 @@ app.use('/', function(request, response)
 {
     //set the headers of the responce
     var headers = {};
+    headers["Access-Control-Allow-Origin"] = "*"; //for cross enviroment request
+    headers["Access-Control-Allow-Methods"] = "POST, GET, PUT, DELETE, OPTIONS";//methods allowed to responce
+    headers["Access-Control-Allow-Credentials"] = false;
+    headers["Access-Control-Max-Age"] = '86400'; // 24 hours
+    headers["Access-Control-Allow-Headers"] = "X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept"; //type of headers
     //answer
-    headers["Content-Type"] = "text/html";
+    headers["Content-Type"] = "application/json";//format response
     response.writeHead(200, headers);
-
 
 	var text = '';
 
@@ -54,7 +60,20 @@ app.use('/', function(request, response)
 		text = "body undefined";
 	}
 
-    response.end(text);
+    console.log(text);
+    
+    //answer a JSON file
+	var otherArray = ["item1", "item2"];
+	var otherObject = { item1: "item1val", item2: "item2val" };
+    
+	var json = JSON.stringify({ 
+    	anObject: otherObject, 
+	    anArray: otherArray, 
+    	another: "item"
+	});
+    
+    //send JSON
+    response.end(json);
 
 });
 

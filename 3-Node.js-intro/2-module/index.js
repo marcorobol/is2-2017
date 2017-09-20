@@ -7,7 +7,7 @@ var server = http.createServer(function (req, res) {
     //HTML head (type of the page)
     res.writeHead(200, {'Content-Type': 'text/plain'});
     //HTML content
-    res.end(miomodulo.sayHello());
+    res.end(miomodulo.reply(req));
 });
  
 //listen in a specific port
