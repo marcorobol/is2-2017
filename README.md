@@ -37,5 +37,8 @@ Heroku:
 Swagger:
 - https://swagger.io/docs/specification/about/
 
+Jest:
+- https://facebook.github.io/jest/
+
 Api.ai:
 - https://api.ai/docs/getting-started/basics
