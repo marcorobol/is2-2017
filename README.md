@@ -23,6 +23,10 @@ JavaScript:
 - http://www.html.it/guide/guida-nodejs/
 - https://developers.google.com/web/fundamentals/getting-started/primers/promises
 
+Git e Markdown language:
+- https://git-scm.com/docs
+- https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet (a nice cheatsheet with the markup for .md files).
+
 Node.js:
 - https://nodejs.org/en/docs/guides/
 - https://www.w3schools.com/nodejs/default.asp
