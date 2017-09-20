@@ -22,6 +22,7 @@ Questo repository contiene dei piccoli esempi con difficolta' progressiva utili 
 JavaScript:
 - http://www.html.it/guide/guida-nodejs/
 - https://developers.google.com/web/fundamentals/getting-started/primers/promises
+- https://www.html5rocks.com/en/tutorials/cors/ (CORS requests)
 
 Git e Markdown language:
 - https://git-scm.com/docs
