@@ -1,4 +1,4 @@
-# Git
+# Git (https://git-scm.com/docs)
 
 - On github.com create a github repository (with .gitignore)
 
@@ -22,9 +22,7 @@
 
   `git push`
 
-- Modify files
-
-- Create a new branch, commit and push
+- Modify files then create a new branch, stage and commit changes, and push to remote repository
 
   `git branch newFunction`
   `git checkout newFunction`
@@ -37,9 +35,7 @@
   `git checkout master` (and check that locally file has changed)
   `git branch hotFix`
   `git checkout hotFix`
-
-- Modify files, commit and push
-
+  Modify files
   `git commit -am "commit the hotfix"`
   `git push origin hotFix`
 
@@ -47,39 +43,38 @@
 
   `git log`
 
-- Modify files and check modification
+- Check modification
 
+  Modify files
   `git diff`
   `git diff master^^ index.js` (check with 3 REPO commits ago)
   `git diff <hash> index.js `
   `git diff master^^ master index.js `
-
-- Check status and commit
-
   `git status`
   `git commit -am "hotfix 2"`
   `git push origin hotFix`
 
-- merge hotFix with master
+- Merge branch with master
 
   `git checkout master`
   `git merge hotFix` (fast-forward)
 
-- Delete hotFix branch
+- Check with gitk
+
+  `gitk`
+
+- Delete branch
 
   `git branch -d hotFix` (delete local branch)
   `git push origin :[branch_name]`
 
-- Go back to work in your local branch
+- Switch to local branch
 
   `git checkout newFunction`
 
-- Check the difference with master
+- Check the difference with master and merge
 
   `git diff master`
-
-- We want the hotfix also in our branch
-
   `git merge master`
 
 - Modify files, commit changes and push
