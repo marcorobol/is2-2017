@@ -1,6 +1,4 @@
-# SE2Lab3
-
-[Here](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet) a nice cheatsheet with the markup for this file.
+# Node.js
 
 To run examples:
 - nmp update
