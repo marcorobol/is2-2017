@@ -8,14 +8,16 @@
 
 - Stage files
 
-  `git add .`
+  `git add .`  
 
 - Check status
 
   `git status`
 
-- Commit staged changes (-a: stage changed tracked files, -m: add message)
+- Commit staged changes
 
+  (-m: add message)  
+  (-a: stage changed tracked files, but in case you have new files you need to manually track them `git add .`)  
   `git commit -am "first commit"`
 
 - Push changes to remote repository
