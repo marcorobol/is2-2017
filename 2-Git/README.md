@@ -1,96 +1,103 @@
-- create github repository (with .gitignore)
+# Git
 
-- clone repo
-git clone <repoAddress> <folderName>
+- On github.com create a github repository (with .gitignore)
 
-- add filed
-git add .
+- Clone repository in a local directory
 
-- status
-git status
+  `git clone [repoAddress] [folderName]`
 
-- commit (-a: commit all versione files, -m: add message)
-git commit -am "first commit"
+- Stage files
 
-- local repo
+  `git add .`
 
-- push
-git push
+- Check status
 
-- origin master
-more .git/config 
+  `git status`
 
-- create a branch
-git branch newFunction
-git checkout newFunction
+- Commit staged changes (-a: stage changed tracked files, -m: add message)
 
-- git status to check the new branch
+  `git commit -am "first commit"`
 
-- modify file, commit changes, push
-git commit -am "commit in the new branch"
-git push origin newFunction
+- Push changes to remote repository
 
-- github, visualize new branch
+  `git push`
 
-- hotfix : new branch from master
-git status (check everything is committed or pushed)
-git checkout master (and check that locally file has changed)
-git branch hotFix
-git checkout hotFix
+- Modify files
 
-- modify files
+- Create a new branch, commit and push
 
-- commit and push
-git commit -am "commit the hotfix"
-git push origin hotFix
+  `git branch newFunction`
+  `git checkout newFunction`
+  `git commit -am "commit in the new branch"`
+  `git push origin newFunction`
 
-- log of commits 
-git log
+- Hotfix: new branch from master
 
-- modify files
+  `git status` (check everything is committed or pushed)
+  `git checkout master` (and check that locally file has changed)
+  `git branch hotFix`
+  `git checkout hotFix`
 
-- check modification
-git diff
-git diff master^^ index.js (check with 3 REPO commits ago)
-git diff <hash> index.js 
-git diff master^^ master index.js 
+- Modify files, commit and push
 
-- status and commit
-git status
-git commit -am "hotfix 2"
-git push origin hotFix
+  `git commit -am "commit the hotfix"`
+  `git push origin hotFix`
+
+- Log of commits
+
+  `git log`
+
+- Modify files and check modification
+
+  `git diff`
+  `git diff master^^ index.js` (check with 3 REPO commits ago)
+  `git diff <hash> index.js `
+  `git diff master^^ master index.js `
+
+- Check status and commit
+
+  `git status`
+  `git commit -am "hotfix 2"`
+  `git push origin hotFix`
 
 - merge hotFix with master
-git checkout master
-git merge hotFix (fast-forward)
 
-- delete hotFix branch
-git branch -d hotFix
+  `git checkout master`
+  `git merge hotFix` (fast-forward)
 
-- go back to work in your local 
-git checkout newFunction
+- Delete hotFix branch
 
-- we want to check the difference with master 
-git diff master
+  `git branch -d hotFix` (delete local branch)
+  `git push origin :[branch_name]`
 
-- we want the hotfix also in our branch
-git merge master
+- Go back to work in your local branch
 
-- modify files
+  `git checkout newFunction`
 
-- commit changes
-git commit -am "new function 2"
+- Check the difference with master
 
-- push
-git push origin newFunction
+  `git diff master`
 
-- merge
-git checkout master  ()Your branch is ahead of : perche' abbiamo fatto il merge dall'altra parte) [ignorare]
-git merge newFunction
+- We want the hotfix also in our branch
 
-- delete branch
-git branch -d newFunction
+  `git merge master`
 
--controllare status
-git status
-git push origin master (se e' ancora avanti)
+- Modify files, commit changes and push
+
+  `git commit -am "new function 2"`
+  `git push origin newFunction`
+
+- Merge
+
+  `git checkout master`  ()Your branch is ahead of : perche' abbiamo fatto il merge dall'altra parte) [ignorare]
+  `git merge newFunction`
+
+- Delete branch
+
+  `git branch -d newFunction`
+
+- Check status
+
+  `git status`
+  `git push origin master` (se e' ancora avanti)
+  
