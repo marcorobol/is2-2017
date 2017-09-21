@@ -5,7 +5,7 @@ var nome;
 
 console.log(typeof (nome));       // undefined
 
-nome = "Pippo";
+nome = 'Pippo';
 console.log(typeof (nome));       // string
 
 nome = 5;        
@@ -18,10 +18,11 @@ nome = [1,2,3];
 console.log(typeof (nome));       // object 
 
 nome = {};
+nome.valore = "Marco";
 console.log(typeof (nome));       // object 
 
 nome = null;
 console.log(typeof (nome));       // object 
 
-nome = function(){};
+nome = function(n){ console.log(" variabile: "+n); };
 console.log(typeof (nome));       // function 
