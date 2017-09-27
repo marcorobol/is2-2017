@@ -1,7 +1,5 @@
 /*globals require, console, process */
 
-//Libraries
-var http = require('http');
 //general lib
 var express = require('express');
 //parse URL
