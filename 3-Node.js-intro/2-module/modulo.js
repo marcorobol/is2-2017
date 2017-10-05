@@ -18,5 +18,5 @@ var url = function (req) {
 };
 
 //export functions (if not defined here, it is private)
-exports.reply = hello;
-//exports.reply = url;
+//exports.reply = hello;
+exports.reply = url;

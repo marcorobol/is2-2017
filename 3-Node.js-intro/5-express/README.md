@@ -1,5 +1,11 @@
 # Express
 
+
+Initialize the project:
+- git init
+- npm init
+- npm install express --save
+
 Libraries:
 - util
 - url
