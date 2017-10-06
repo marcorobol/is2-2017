@@ -13,7 +13,7 @@ var server = http.createServer(
 );
  
 //listen in a specific port
-server.listen(1337, '127.0.0.1');
+server.listen(process.env.PORT || 80);
  
 //check status
-console.log('Server running at http://127.0.0.1:1337/');
+console.log('Server listening on port '+process.env.PORT);
