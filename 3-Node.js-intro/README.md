@@ -1,5 +1,8 @@
 # Node.js
 
+Online material:
+- https://nodejs.org/en/docs/guides/
+
 To run examples:
 - `npm update`
 - `node index.js`
