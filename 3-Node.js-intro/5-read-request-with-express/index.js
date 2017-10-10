@@ -1,9 +1,7 @@
 /*globals require, console, process */
 
-//express
 var express = require('express');
 var bodyParser = require('body-parser');
-//inspect variables
 var util = require('util');
 
 //instantiate express
@@ -13,6 +11,9 @@ var app = express();
 // this will let us get the data from a POST
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+
+// set our port
+var port = process.env.PORT || 8080;
 
 
 //handle requests on /
@@ -35,7 +36,7 @@ app.all('/', function (req, res) {
 
 
 //listen in a specific port
-app.listen((process.env.PORT || 80));
+app.listen(port);
 
 //check status
-console.log('Server running at http://localhost:80/');
+console.log('Server running at http://localhost:' + port);

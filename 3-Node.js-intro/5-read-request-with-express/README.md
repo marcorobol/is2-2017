@@ -17,6 +17,3 @@ To run:
 Links:
 - https://ourcodeworld.com/articles/read/261/how-to-create-an-http-server-with-express-in-node-js
 
-
-### Util module
-- util.inspect parse javascript object in plain text
