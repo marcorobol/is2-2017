@@ -5,6 +5,6 @@ Online material:
 
 Run:
 - `$ node index.js`
-- open browser on localhost:1337
+- open browser on localhost:80
 - press `ctrl+c` to kill the server from the console
 

@@ -1,9 +1,6 @@
 //Libraries
 var http = require('http');
  
-var hostname = '127.0.0.1';
-var port = 80;
-
 //create a server
 var server = http.createServer(
     function (req, res) {
@@ -11,12 +8,12 @@ var server = http.createServer(
         res.writeHead(200, {'Content-Type': 'text/plain'});
         
         //HTML content
-        res.write('Hello World.\n');
-        res.write('Requested URL : ' + req.url);
-        res.end();
+        res.end('Hello World');
     }
 );
  
 //listen in a specific port
-server.listen(port, hostname);
-console.log('Server running at http://${hostname}:${port}/');
+server.listen(process.env.PORT || 80);
+ 
+//check status
+console.log('Server listening on port '+process.env.PORT);

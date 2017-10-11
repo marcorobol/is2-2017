@@ -1,16 +1,14 @@
 {
-  "name": "4_exercise",
+  "name": "5-read-request-with-express",
   "version": "1.0.0",
+  "description": "Online material:\r - http://expressjs.com/it/starter/installing.html\r - http://expressjs.com/it/starter/hello-world.html",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "Mattia Salnitri",
+  "author": "Marco",
   "license": "ISC",
-  "description": "",
   "dependencies": {
-    "express": "^4.16.2",
-    "url": "^0.11.0",
-    "util": "^0.10.3"
+    "express": "^4.16.2"
   }
 }

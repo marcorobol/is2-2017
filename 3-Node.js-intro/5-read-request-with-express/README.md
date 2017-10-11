@@ -3,6 +3,7 @@
 Online material:
 - http://expressjs.com/it/starter/installing.html
 - http://expressjs.com/it/starter/hello-world.html
+- https://ourcodeworld.com/articles/read/261/how-to-create-an-http-server-with-express-in-node-js
 
 Initialize the project:
 - git init
@@ -14,6 +15,4 @@ To run:
 - `node index.js`
 - open browser on localhost:80
 
-Links:
-- https://ourcodeworld.com/articles/read/261/how-to-create-an-http-server-with-express-in-node-js
 

@@ -2,6 +2,7 @@
 
 Online:
 - https://scotch.io/tutorials/build-a-restful-api-using-node-and-express-4
+- http://justindavis.co/2015/08/31/CORS-in-Express/
 
 Initialize:
 - git init

@@ -9,14 +9,12 @@ var util = require('util');
 //instantiate express
 var app = express();
 
-/** bodyParser.urlencoded
- * To parse body as URL encoded data
- * (which is how browsers tend to
- * POST form data from regular forms)
+/* Configure express app to use bodyParser()
+ * to parse body as URL encoded data
+ * (this is how browser POST form data)
  */
-app.use(bodyParser.urlencoded({
-    extended: true
-}));
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 
 
 //handle get req on /sum

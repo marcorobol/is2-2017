@@ -2,6 +2,8 @@
 
 Online material:
 - http://expressjs.com/it/starter/basic-routing.html
+- http://expressjs.com/it/guide/using-middleware.html
+- https://ourcodeworld.com/articles/read/261/how-to-create-an-http-server-with-express-in-node-js
 
 Initialize the project:
 - git init
