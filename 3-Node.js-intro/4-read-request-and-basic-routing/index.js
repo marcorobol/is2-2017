@@ -17,11 +17,11 @@ const port = (process.env.PORT || 80);
 const server = http.createServer((req, res) => {
     
     //routing examples
-    if (request.method === 'GET' && request.url === '/hi') {
+    if (req.method === 'GET' && req.url === '/hi') {
         res.setHeader('Content-Type', 'text/plain');
-        response.end('Hello!');
+        res.end('Hello!');
     }
-    else if (request.method === 'GET' && request.url === '/') {
+    else if (req.method === 'GET' || req.method === 'POST') {
         res.setHeader('Content-Type', 'text/plain');
         
         //parse url
@@ -38,11 +38,11 @@ const server = http.createServer((req, res) => {
             bodyBuffer.push(chunk);
         }).on('end', () => {
             bodyString = Buffer.concat(bodyBuffer).toString();
-            // at this point, `bodyString` has the entire request body stored in it as a string
+            // at this point, `bodyString` has the entire req body stored in it as a string
             bodyObj = qs.parse(bodyString);
-            // at this point, `bodyObj` has the entire request body stored in it as an object
+            // at this point, `bodyObj` has the entire req body stored in it as an object
 
-            //write response
+            //write res
             res.write('Server working properly.' + '\n');
             res.write('url: ' + req.url + '\n');
             res.write('method: ' + req.method.toLowerCase() + '\n');
@@ -50,14 +50,14 @@ const server = http.createServer((req, res) => {
             res.write('?username: '+url_parts.query.username + '\n');
             res.write('body:  ' + bodyString + '\n');
             res.write('body.username: ' + bodyObj.username + '\n');
-            //send response
+            //send res
             res.end();
 
         });
     }
     else {
-        response.statusCode = 404;
-        response.end();
+        res.statusCode = 404;
+        res.end();
     }
     
 });
