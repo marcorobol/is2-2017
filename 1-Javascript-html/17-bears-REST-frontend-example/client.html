@@ -9,11 +9,13 @@
 <script src="http://ajax.aspnetcdn.com/ajax/knockout/knockout-2.2.1.js"></script>
 </head>
 <body>
+
     <div class="navbar">
         <div class="navbar-inner">
             <a class="brand" href="#">Bears application front-end</a>
         </div>
     </div>
+
     <div id="main" class="container">
         <table class="table table-striped">
             <tr>
@@ -31,6 +33,7 @@
         </table>
         <button data-bind="click: beginAdd" class="btn">Add Bear</button>
     </div>
+
     <div id="add" class="modal hide fade" tabindex="=1" role="dialog" aria-labelledby="addDialogLabel" aria-hidden="true">
         <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
@@ -41,13 +44,7 @@
                 <div class="control-group">
                     <label class="control-label" for="inputBear">Bear</label>
                     <div class="controls">
-                        <input data-bind="value: title" type="text" id="inputBear" placeholder="Bear title" style="width: 150px;">
-                    </div>
-                </div>
-                <div class="control-group">
-                    <label class="control-label" for="inputDescription">Description</label>
-                    <div class="controls">
-                        <input data-bind="value: description" type="text" id="inputDescription" placeholder="Description" style="width: 300px;">
+                        <input data-bind="value: name" type="text" id="inputBear" placeholder="Bear name" style="width: 150px;">
                     </div>
                 </div>
             </form>
@@ -57,6 +54,7 @@
             <button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
         </div>
     </div>
+
     <div id="edit" class="modal hide fade" tabindex="=1" role="dialog" aria-labelledby="editDialogLabel" aria-hidden="true">
         <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
@@ -67,20 +65,7 @@
                 <div class="control-group">
                     <label class="control-label" for="inputBear">Bear</label>
                     <div class="controls">
-                        <input data-bind="value: title" type="text" id="inputBear" placeholder="Bear title" style="width: 150px;">
-                    </div>
-                </div>
-                <div class="control-group">
-                    <label class="control-label" for="inputDescription">Description</label>
-                    <div class="controls">
-                        <input data-bind="value: description" type="text" id="inputDescription" placeholder="Description" style="width: 300px;">
-                    </div>
-                </div>
-                <div class="control-group">
-                    <div class="controls">
-                        <label class="checkbox">
-                            <input data-bind="checked: done" type="checkbox"> Done
-                        </label>
+                        <input data-bind="value: name" type="text" id="inputBear" placeholder="Bear name" style="width: 150px;">
                     </div>
                 </div>
             </form>
@@ -107,22 +92,11 @@
                     cache: false,
                     dataType: 'json',
                     data: JSON.stringify(data),
-                    beforeSend: function (xhr) {
-                        xhr.setRequestHeader("Authorization", 
-                            "Basic " + btoa(self.username + ":" + self.password));
-                    },
                     error: function(jqXHR) {
                         console.log("ajax error " + jqXHR.status);
                     }
                 };
                 return $.ajax(request);
-            }
-            self.updateBear = function(bear, newBear) {
-                var i = self.bears.indexOf(bear);
-                self.bears()[i].uri(newBear.uri);
-                self.bears()[i].title(newBear.title);
-                self.bears()[i].description(newBear.description);
-                self.bears()[i].done(newBear.done);
             }
 
             self.beginAdd = function() {
@@ -131,96 +105,82 @@
             self.add = function(bear) {
                 self.ajax(self.bearsURI, 'POST', bear).done(function(data) {
                     self.bears.push({
-                        uri: ko.observable(data.bear.uri),
-                        title: ko.observable(data.bear.title),
-                        description: ko.observable(data.bear.description),
-                        done: ko.observable(data.bear.done)
+                        uri: ko.observable(self.bearsURI + '/' + data._id),
+                        name: ko.observable(data.name)
                     });
                 });
             }
+
             self.beginEdit = function(bear) {
                 editBearViewModel.setBear(bear);
                 $('#edit').modal('show');
             }
             self.edit = function(bear, data) {
-                self.ajax(bear.uri(), 'PUT', data).done(function(res) {
-                    self.updateBear(bear, res.bear);
+                self.ajax(bear.uri(), 'PUT', data).done(function(data) {
+                    var i = self.bears.indexOf(bear);
+                    self.bears()[i].name(data.name);
                 });
             }
+
             self.remove = function(bear) {
                 self.ajax(bear.uri(), 'DELETE').done(function() {
                     self.bears.remove(bear);
                 });
             }
-            self.markInProgress = function(bear) {
-                self.ajax(bear.uri(), 'PUT', { done: false }).done(function(res) {
-                    self.updateBear(bear, res.bear);
-                });
-            }
-            self.markDone = function(bear) {
-                self.ajax(bear.uri(), 'PUT', { done: true }).done(function(res) {
-                    self.updateBear(bear, res.bear);
-                });
-            }
+            
+            self.ajax(self.bearsURI, 'GET').done(function(data) {
+                for (var i = 0; i < data.length; i++) {
+                    self.bears.push({
+                        uri: ko.observable(self.bearsURI + '/' + data[i]._id),
+                        name: ko.observable(data[i].name)
+                    });
+                }
+            }).fail(function(jqXHR) {
+                if (jqXHR.status == 403)
+                    setTimeout(self.beginLogin, 500);
+            });
+            
         }
+
         function AddBearViewModel() {
             var self = this;
-            self.title = ko.observable();
-            self.description = ko.observable();
+            self.name = ko.observable();
  
             self.addBear = function() {
                 $('#add').modal('hide');
                 bearsViewModel.add({
-                    title: self.title(),
-                    description: self.description()
+                    name: self.name()
                 });
-                self.title("");
-                self.description("");
+                self.name("");
             }
         }
+
         function EditBearViewModel() {
             var self = this;
-            self.title = ko.observable();
-            self.description = ko.observable();
-            self.done = ko.observable();
+            self.name = ko.observable();
  
             self.setBear = function(bear) {
                 self.bear = bear;
-                self.title(bear.title());
-                self.description(bear.description());
-                self.done(bear.done());
+                self.name(bear.name());
                 $('edit').modal('show');
             }
  
             self.editBear = function() {
                 $('#edit').modal('hide');
                 bearsViewModel.edit(self.bear, {
-                    title: self.title(),
-                    description: self.description() ,
-                    done: self.done()
+                    name: self.name()
                 });
             }
         }
-        function LoginViewModel() {
-            var self = this;
-            self.username = ko.observable();
-            self.password = ko.observable();
- 
-            self.login = function() {
-                $('#login').modal('hide');
-                bearsViewModel.login(self.username(), self.password());
-            }
-        }
-        
+                
         var bearsViewModel = new bearsViewModel();
         var addBearViewModel = new AddBearViewModel();
         var editBearViewModel = new EditBearViewModel();
-        var loginViewModel = new LoginViewModel();
         
         ko.applyBindings(bearsViewModel, $('#main')[0]);
         ko.applyBindings(addBearViewModel, $('#add')[0]);
         ko.applyBindings(editBearViewModel, $('#edit')[0]);
-        ko.applyBindings(loginViewModel, $('#login')[0]);
+
     </script>
 </body>
 </html>

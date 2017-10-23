@@ -56,7 +56,7 @@ router.route('/bears')
         // save the bear and check for errors
         bear.save(function (err) {
             if (err) { res.send(err); }
-            res.json({ message: 'Bear created!' });
+            res.json(bear);
         });
 
     })
@@ -95,7 +95,7 @@ router.route('/bears/:bear_id')
             // save the bear
             bear.save(function (err) {
                 if (err) { res.send(err); }
-                res.json({ message: 'Bear updated!' });
+                res.json(bear);
             });
 
         });
@@ -120,7 +120,8 @@ app.use(function (req, res, next) {
     //Enabling CORS
     res.header('Access-Control-Allow-Origin', '*');
     res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
-    if (req.method === 'Options') {
+    res.header('Content-Type', 'application/json');
+    if (req.method == 'OPTIONS') {
         res.header('Access-Control-Allow-Methods', 'PUT, POST, DELETE');
         return res.status(200).json({});
     }
