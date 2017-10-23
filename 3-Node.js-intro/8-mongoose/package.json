@@ -1,0 +1,17 @@
+{
+  "name": "8-rest",
+  "version": "1.0.0",
+  "description": "Online:\r - https://scotch.io/tutorials/build-a-restful-api-using-node-and-express-4",
+  "main": "index.js",
+  "dependencies": {
+    "express": "^4.16.2",
+    "mongoose": "^4.12.4",
+    "mongooses": "^1.0.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}

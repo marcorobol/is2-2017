@@ -1,4 +1,4 @@
-# RESTFUL API with Node
+# RESTFUL APIs with Node
 
 Online:
 - https://scotch.io/tutorials/build-a-restful-api-using-node-and-express-4
