@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Bootstrap and Knockout Demo</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css" rel="stylesheet">
+<script src="http://ajax.aspnetcdn.com/ajax/jquery/jquery-1.9.0.js"></script>
+<script src="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jquery.templates/beta1/jquery.tmpl.js"></script>
+</head>
+<body>
+    <div class="navbar">
+        <div class="navbar-inner">
+            <a class="brand" href="#">Bootstrap Demo</a>
+        </div>
+    </div>
+    <div id="main" class="container">
+        <table id="tasksTable" class="table table-striped">
+            <tr><td style="width: 1px;"></td><td><b>Task</b></td><td><b>Options</b></td></tr>
+        </table>
+        <button onclick="beginAdd()" class="btn">Add Task</button>
+    </div>
+    <div id="add" class="modal hide fade" tabindex="=1" role="dialog" aria-labelledby="addDialogLabel" aria-hidden="true">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h3 id="addDialogLabel">Add Task</h3>
+        </div>
+        <div class="modal-body">
+            <form class="form-horizontal">
+                <div class="control-group">
+                    <label class="control-label" for="inputTask">Task</label>
+                    <div class="controls">
+                        <input type="text" id="inputTask" placeholder="Task title" style="width: 150px;">
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="inputDescription">Description</label>
+                    <div class="controls">
+                        <input type="text" id="inputDescription" placeholder="Description" style="width: 300px;">
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button onclick="add()" class="btn btn-primary">Add Task</button>
+            <button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
+        </div>
+    </div>
+
+    <script id="taskTemplate" type="text/x-jQuery-tmpl" style="display:none">
+        <tr>
+            <td>
+                <span style="display:none" class="label label-success">Done</span>
+                <span class="label label-important">In Progress</span>
+            </td>
+            <td><p><b>${name}</b></p><p>${description}</p></td>
+            <td>
+                <span>
+                    <button onclick="remove(this)" class="btn">Delete</button>
+                </span>
+                <span>
+                    <button onclick="markInProgress(this)" class="btn">Mark In Progress</button>
+                </span>
+                <span>
+                    <button onclick="markDone(this)" class="btn">Mark Done</button>
+                </span>
+            </td>
+        </tr>
+    </script>
+
+    <script type="text/javascript">
+        
+        const beginAdd = function() {
+            $('#add').modal('show');
+        };
+
+        const add = function() {
+            $('#add').modal('hide');
+
+            let task = {};
+            task.name = $("#inputTask")[0].value;
+            task.description = $("#inputDescription")[0].value;
+            
+            $("#taskTemplate").tmpl(task).appendTo("#tasksTable");
+        };
+
+        const remove = function(task) {
+            console.log(task);
+            task.parentElement.parentElement.parentElement.remove();
+        }
+
+        const markInProgress = function(task) {
+            task.parentElement.parentElement.parentElement.getElementsByClassName('label-success')[0].style.display = 'none';
+            task.parentElement.parentElement.parentElement.getElementsByClassName('label-important')[0].style.display = '';
+        }
+
+        const markDone = function(task) {
+            task.parentElement.parentElement.parentElement.getElementsByClassName('label-success')[0].style.display = '';
+            task.parentElement.parentElement.parentElement.getElementsByClassName('label-important')[0].style.display = 'none';
+        }
+
+        
+        let taskTest = {};
+        taskTest.name = 'Test';
+        taskTest.description = '';
+        $("#taskTemplate").tmpl(taskTest).appendTo("#tasksTable");
+        
+    </script>
+
+</body>
+</html>

@@ -9,7 +9,13 @@ var Bear = require('./bear');
 const app = express();
 
 // instantiate mongoose
-mongoose.connect('mongodb://test:test@ds115625.mlab.com:15625/bears');
+mongoose.Promise = global.Promise;
+var options = {
+    useMongoClient: true,
+    user: 'test',
+    pass: 'test'
+  };
+mongoose.connect('mongodb://test:test@ds115625.mlab.com:15625/bears', options);
 const db = mongoose.connection;
 db.on('error', err => {
   console.error(`Error while connecting to DB: ${err.message}`);

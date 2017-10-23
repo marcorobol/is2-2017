@@ -8,9 +8,16 @@ Taken from: https://devcenter.heroku.com/articles/getting-started-with-nodejs#in
 
 Create an app
 - `git init`
+- `npm init`
+- `npm install express --save`
 - `heroku create example`
 
+Create a file called `Procfile` to let Heroku know how to start the app:
+- `web: node index.js`
+
 Upload on heroku
+- `git add all`
+- `git commit -m'first commit'`
 - `git push heroku master`
 
 Scale the app (set to 1 to run; set to 0 to stop):
@@ -22,19 +29,16 @@ Open app in the browser:
 View logs:
 - `heroku logs --tail`
 
-Create a file called `Procfile` to let Heroku know how to start the app:
-- `web: node index.js`
-
-heroku local web
+Run app locally
+- `heroku local web`
 
 ## Config variables
 
 Config:
-- set: `heroku config:set TIMES=2`
+- set: `heroku config:set PORT=80`
 - read: `heroku config`
-- values stored in file .env: `TIMES=2`
+- values stored in file .env: `PORT=80`
 
-From a Node.js app read config value, e.g. TIME, by calling:
-- `process.env.TIMES`
-
+From a Node.js app read config value, e.g. PORT, by calling:
+- `process.env.PORT`
 

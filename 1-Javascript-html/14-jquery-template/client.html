@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Bootstrap and Knockout Demo</title>
+<script src="http://ajax.aspnetcdn.com/ajax/jquery/jquery-1.9.0.js"></script>
+<script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jquery.templates/beta1/jquery.tmpl.js"></script>
+</head>
+<body>
+    <div>
+        <div>
+            <a href="#">JQuery Demo</a>
+        </div>
+    </div>
+    <div id="main">
+        <table id="tasksTable">
+            <tr><td style="width: 1px;"></td><td><b>Task</b></td><td><b>Options</b></td></tr>
+        </table>
+    </div>
+    <div id="add">
+        <div>
+            <form>
+                <div>
+                    <label>Task</label>
+                    <div>
+                        <input type="text" id="inputTask" placeholder="Task title" style="width: 150px;">
+                    </div>
+                </div>
+                <div>
+                    <label>Description</label>
+                    <div>
+                        <input type="text" id="inputDescription" placeholder="Description" style="width: 300px;">
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div>
+            <button onclick="add()">Add Task</button>
+        </div>
+    </div>
+
+    <script id="taskTemplate" type="text/x-jQuery-tmpl" style="display:none">
+        <tr>
+            <td>
+                <span style="display:none" class="label label-success">Done</span>
+                <span class="label label-important">In Progress</span>
+            </td>
+            <td><p><b>${name}</b></p><p>${description}</p></td>
+            <td>
+                <span>
+                    <button onclick="remove(this)" class="btn">Delete</button>
+                </span>
+                <span>
+                    <button onclick="markInProgress(this)" class="btn">Mark In Progress</button>
+                </span>
+                <span>
+                    <button onclick="markDone(this)" class="btn">Mark Done</button>
+                </span>
+            </td>
+        </tr>
+    </script>
+
+    <script type="text/javascript">
+
+        const add = function() {
+            let task = {};
+            task.name = $("#inputTask")[0].value;
+            task.description = $("#inputDescription")[0].value;
+            
+            $("#taskTemplate").tmpl(task).appendTo("#tasksTable");
+        };
+
+        const remove = function(task) {
+            console.log(task);
+            task.parentElement.parentElement.parentElement.remove();
+        }
+
+        const markInProgress = function(task) {
+            task.parentElement.parentElement.parentElement.getElementsByClassName('label-success')[0].style.display = 'none';
+            task.parentElement.parentElement.parentElement.getElementsByClassName('label-important')[0].style.display = '';
+        }
+
+        const markDone = function(task) {
+            task.parentElement.parentElement.parentElement.getElementsByClassName('label-success')[0].style.display = '';
+            task.parentElement.parentElement.parentElement.getElementsByClassName('label-important')[0].style.display = 'none';
+        }
+
+        
+        let taskTest = {};
+        taskTest.name = 'Test';
+        taskTest.description = '';
+        $("#taskTemplate").tmpl(taskTest).appendTo("#tasksTable");
+        
+    </script>
+
+</body>
+</html>

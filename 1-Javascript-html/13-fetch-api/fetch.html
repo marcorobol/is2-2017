@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Fetch API Demo</title>
+</head>
+<body>
+    <h1>Fetch API Demo</h1>
+    <h2>Authors:</h2>
+    <ul id="authors"></ul>
+    
+    <script type="text/javascript">
+
+        const ul = document.getElementById('authors'); // Get the list where we will place our authors
+        const url = 'https://randomuser.me/api/?results=10'; // Get 10 random users        
+        fetch(url)
+            .then((resp) => resp.json()) // Transform the data into json
+            .then(function(data) {
+                // Here you get the data to modify as you please
+                let authors = data.results; // Get the results
+                return authors.map(function(author) { // Map through the results and for each run the code below
+                    let li = document.createElement('li'); //  Create the elements we need
+                    let img = document.createElement('img');
+                    let span = document.createElement('span');
+                    img.src = author.picture.medium;  // Add the source of the image to be the src of the img element
+                    span.innerHTML = `${author.name.first} ${author.name.last}`; // Make the HTML of our span to be the first and last name of our author
+                    // Append all our elements
+                    li.appendChild(img);
+                    li.appendChild(span);
+                    ul.appendChild(li);
+                })
+            })
+            .catch( error => console.error(error) );// If there is any error you will catch them here
+
+    </script>
+    
+</body>
+</html>
