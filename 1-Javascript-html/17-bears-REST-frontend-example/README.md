@@ -1,6 +1,6 @@
-# Cross origin requests
+# REST client
 
-Client for the previous REST backend example
+Client for the bears REST backend example
 
 Online:
 - https://blog.miguelgrinberg.com/post/writing-a-javascript-rest-client

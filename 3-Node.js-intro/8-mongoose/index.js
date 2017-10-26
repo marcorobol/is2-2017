@@ -32,7 +32,7 @@ app.use(function (req, res, next) {
     //Enabling CORS
     res.header('Access-Control-Allow-Origin', '*');
     res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
-    if (req.method === 'Options') {
+    if (req.method == 'OPTIONS') {
         res.header('Access-Control-Allow-Methods', 'PUT, POST, DELETE');
         return res.status(200).json({});
     }
@@ -43,7 +43,20 @@ app.use(function (req, res, next) {
 
 
 // home route
-app.get('/:bearName', function (req, res) {
+app.get('/bears', function (req, res) {
+    
+    // Get all the bears
+    Bear.find(function (err, bears) {
+        if (err) { res.send(err); }
+        res.json(bears);
+    });
+
+});
+
+
+
+// home route
+app.get('/bears/create/:bearName', function (req, res) {
     
     // Create a bear
     // create a new instance of the Bear model
@@ -55,12 +68,7 @@ app.get('/:bearName', function (req, res) {
         if (err) { res.send(err); }
     });
     
-    // Get all the bears
-    Bear.find(function (err, bears) {
-        if (err) { res.send(err); }
-        res.json(bears);
-    });
-
+    res.json(bear);
 });
 
 
