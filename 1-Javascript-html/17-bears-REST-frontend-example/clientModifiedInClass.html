@@ -20,10 +20,12 @@
         <table class="table table-striped">
             <tr>
                 <td><b>Bears</b></td>
+                <td><b>Age</b></td>
                 <td><b>Options</b></td></tr>
             <!-- ko foreach: bears -->
             <tr>
                 <td><p><b data-bind="text: name"></b></p></td>
+                <td><p><b data-bind="text: age"></b></p></td>
                 <td>
                     <button data-bind="click: $parent.beginEdit" class="btn">Edit</button>
                     <button data-bind="click: $parent.remove" class="btn">Delete</button>
@@ -45,6 +47,7 @@
                     <label class="control-label" for="inputBear">Bear</label>
                     <div class="controls">
                         <input data-bind="value: name" type="text" id="inputBear" placeholder="Bear name" style="width: 150px;">
+                        <input data-bind="value: age" type="text" id="inputBear" placeholder="Bear age" style="width: 150px;">
                     </div>
                 </div>
             </form>
@@ -66,6 +69,7 @@
                     <label class="control-label" for="inputBear">Bear</label>
                     <div class="controls">
                         <input data-bind="value: name" type="text" id="inputBear" placeholder="Bear name" style="width: 150px;">
+                        <input data-bind="value: age" type="text" id="inputBearAge" placeholder="Bear age" style="width: 150px;">
                     </div>
                 </div>
             </form>
@@ -77,10 +81,12 @@
     </div>
     
     <script type="text/javascript">
+
         function bearsViewModel() {
             var self = this;
             self.bearsURI = 'https://is2-bears.herokuapp.com/api/bears';
             self.bears = ko.observableArray();
+
             self.ajax = function(uri, method, data) {
                 var request = {
                     url: uri,
@@ -96,6 +102,7 @@
                 };
                 return $.ajax(request);
             }
+
             self.beginAdd = function() {
                 $('#add').modal('show');
             }
@@ -103,20 +110,24 @@
                 self.ajax(self.bearsURI, 'POST', bear).done(function(data) {
                     self.bears.push({
                         uri: ko.observable(self.bearsURI + '/' + data._id),
-                        name: ko.observable(data.name)
+                        name: ko.observable(data.name),
+                        age: ko.observable(bear.age)
                     });
                 });
             }
+
             self.beginEdit = function(bear) {
                 editBearViewModel.setBear(bear);
                 $('#edit').modal('show');
             }
             self.edit = function(bear, data) {
-                self.ajax(bear.uri(), 'PUT', data).done(function(data) {
+                self.ajax(bear.uri(), 'PUT', data).done(function(dataReturned) {
                     var i = self.bears.indexOf(bear);
-                    self.bears()[i].name(data.name);
+                    self.bears()[i].name(dataReturned.name);
+                    self.bears()[i].age(data.age);
                 });
             }
+
             self.remove = function(bear) {
                 self.ajax(bear.uri(), 'DELETE').done(function() {
                     self.bears.remove(bear);
@@ -127,7 +138,8 @@
                 for (var i = 0; i < data.length; i++) {
                     self.bears.push({
                         uri: ko.observable(self.bearsURI + '/' + data[i]._id),
-                        name: ko.observable(data[i].name)
+                        name: ko.observable(data[i].name),
+                        age: ko.observable('Unknown')
                     });
                 }
             }).fail(function(jqXHR) {
@@ -136,32 +148,40 @@
             });
             
         }
+
         function AddBearViewModel() {
             var self = this;
             self.name = ko.observable();
+            self.age = ko.observable();
  
             self.addBear = function() {
                 $('#add').modal('hide');
                 bearsViewModel.add({
-                    name: self.name()
+                    name: self.name(),
+                    age: self.age()
                 });
                 self.name("");
+                self.age("");
             }
         }
+
         function EditBearViewModel() {
             var self = this;
+            self.bear = {};
             self.name = ko.observable();
+            self.age = ko.observable();
  
             self.setBear = function(bear) {
                 self.bear = bear;
                 self.name(bear.name());
-                $('edit').modal('show');
+                self.age(bear.age());
             }
  
             self.editBear = function() {
                 $('#edit').modal('hide');
                 bearsViewModel.edit(self.bear, {
-                    name: self.name()
+                    name: self.name(),
+                    age: self.age()
                 });
             }
         }
@@ -173,6 +193,7 @@
         ko.applyBindings(bearsViewModel, $('#main')[0]);
         ko.applyBindings(addBearViewModel, $('#add')[0]);
         ko.applyBindings(editBearViewModel, $('#edit')[0]);
+
     </script>
 </body>
 </html>

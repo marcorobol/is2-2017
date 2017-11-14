@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Fetch API Demo</title>
+</head>
+<body>
+    
+    <script type="text/javascript">
+
+
+        var callback = function() {
+            console.log("One second passed");
+        }
+        //setTimeout(callback, 1000);
+        //setTimeout(callback, 1000);
+
+
+
+        var callback3 = function() {
+            console.log("Two seconds passed");
+        }
+        var callback2 = function() {
+            console.log("One second passed");
+            setTimeout(callback3, 1000);
+        }
+        //setTimeout(callback2, 1000);
+
+
+
+        function delay(interval) {
+            return new Promise(function(resolve) {
+                setTimeout(resolve, interval);
+            });
+        }
+        delay(1000)
+            .then( () => {
+                //console.log("One second passed");
+                return delay(1000);
+            } )
+            .then( (value) => {
+                //console.log("One second passed " + value)
+            } );
+
+        
+        var promise = delay(1000).then( () => {
+                console.log("One second passed");
+                return delay(1000);
+            } );
+        for(var i=0; i<5; i++) {
+            promise = promise.then( () => {
+                console.log("One second passed");
+                return delay(1000);
+            } );
+        }
+
+
+        function delay2(interval) {
+            return new Promise(function(resolve, failure) {
+                if(interval<500) {
+                    setTimeout(resolve, interval);
+                }
+                else {
+                    failure();
+                }
+            });
+        }
+        delay2(1000)
+            .then(
+                () => {console.log("One second passed");},
+                () => {console.log("Interval greater than 500");}
+             );
+
+
+
+
+
+        function animationTimeout(animation, step, interval) {
+            if (step == 1) {
+                animation();
+                return delay(0);
+            } else {
+                animation();
+                return delay(interval);
+            }
+        };
+        //animationTimeout(() => console.log("First frame"), 1, 1000).then(() => console.log("First frame"), () => console.log("Other frames"));
+
+        function animationRepeat(animation, interval, times) {
+            return new Promise(function(resolve, reject) {
+                if (step == 1) {
+                    setTimeout(resolve, interval);
+                } else {
+                    reject('animation not supported');
+                }
+            });
+        }
+
+    </script>
+    
+</body>
+</html>
