@@ -7,14 +7,16 @@
     
     <script type="text/javascript">
 
+        /*
+         * Callbacks
+         */
 
-        var callback = function() {
+        var callback1 = function() {
             console.log("One second passed");
         }
-        //setTimeout(callback, 1000);
-        //setTimeout(callback, 1000);
-
-
+        //setTimeout(callback1, 1000);
+        //setTimeout(callback1, 1000);
+        
 
         var callback3 = function() {
             console.log("Two seconds passed");
@@ -25,7 +27,13 @@
         }
         //setTimeout(callback2, 1000);
 
+    </script>
+    
+    <script type="text/javascript">
 
+        /*
+         * Promises
+         */
 
         function delay(interval) {
             return new Promise(function(resolve) {
@@ -53,7 +61,10 @@
             } );
         }
 
-
+        /*
+        * Handling failure
+        */
+        
         function delay2(interval) {
             return new Promise(function(resolve, failure) {
                 if(interval<500) {

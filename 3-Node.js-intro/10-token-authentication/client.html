@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Token-based Authentication Client Demo</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css" rel="stylesheet">
+    <script src="http://ajax.aspnetcdn.com/ajax/jquery/jquery-1.9.0.js"></script>
+    <script src="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/js/bootstrap.min.js"></script>
+    <script src="http://ajax.aspnetcdn.com/ajax/knockout/knockout-2.2.1.js"></script>
+</head>
+<body>
+    <div class="navbar">
+        <div class="navbar-inner">
+            <a class="brand" href="#">Token-based Authentication Client Demo</a>
+        </div>
+    </div>
+    <div id="main" class="container">
+        <div class="navbar">
+            <div class="navbar-inner">
+                <p>
+                    <span>Welcome </span>
+                    <span data-bind="text: username"></span>
+                    <button data-bind="click: logout" class="btn">Log out</button>
+                </p>
+            </div>
+        </div>
+        <table class="table table-striped">
+            <tr><td style="width: 1px;"></td><td><b>User</b></td><td><b>Password</b></td><td><b>Options</b></td></tr>
+            <!-- ko foreach: users -->
+            <tr>
+                <td>
+                    <span data-bind="visible: admin" class="label label-success">Admin</span>
+                    <span data-bind="visible: !admin()" class="label label-important">User</span>
+                </td>
+                <td>
+                    <p><b data-bind="text: name"></b></p>
+                </td>
+                <td>
+                    <p data-bind="text: password"></p>
+                </td>
+                <td>
+                    <button data-bind="click: $parent.beginEdit" class="btn">Edit</button>
+                    <button data-bind="click: $parent.remove" class="btn">Delete</button>
+                    <span data-bind="visible: admin">
+                        <button data-bind="click: $parent.unsetAdmin" class="btn">Set normal user</button>
+                    </span>
+                    <span data-bind="visible: !admin()">
+                        <button data-bind="click: $parent.setAdmin" class="btn">Set admin</button>
+                    </span>
+                </td>
+            </tr>
+            <!-- /ko -->
+        </table>
+        <button data-bind="click: beginAdd" class="btn">Add User</button>
+    </div>
+    <div id="add" class="modal hide fade" tabindex="=1" role="dialog" aria-labelledby="addDialogLabel" aria-hidden="true">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h3 id="addDialogLabel">Add User</h3>
+        </div>
+        <div class="modal-body">
+            <form class="form-horizontal">
+                <div class="control-group">
+                    <label class="control-label" for="inputUser">User</label>
+                    <div class="controls">
+                        <input data-bind="value: name" type="text" id="inputUser" placeholder="User name" style="width: 150px;">
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="inputDescription">Description</label>
+                    <div class="controls">
+                        <input data-bind="value: password" type="text" id="inputDescription" placeholder="Description" style="width: 300px;">
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button data-bind="click: addUser" class="btn btn-primary">Add User</button>
+            <button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
+        </div>
+    </div>
+    <div id="edit" class="modal hide fade" tabindex="=1" role="dialog" aria-labelledby="editDialogLabel" aria-hidden="true">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h3 id="editDialogLabel">Edit User</h3>
+        </div>
+        <div class="modal-body">
+            <form class="form-horizontal">
+                <div class="control-group">
+                    <label class="control-label" for="inputUser">User</label>
+                    <div class="controls">
+                        <input data-bind="value: name" type="text" id="inputUser" placeholder="User name" style="width: 150px;">
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="inputDescription">Description</label>
+                    <div class="controls">
+                        <input data-bind="value: password" type="text" id="inputDescription" placeholder="Description" style="width: 300px;">
+                    </div>
+                </div>
+                <div class="control-group">
+                    <div class="controls">
+                        <label class="checkbox">
+                            <input data-bind="checked: admin" type="checkbox"> Done
+                        </label>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button data-bind="click:editUser" class="btn btn-primary">Update User</button>
+            <button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
+        </div>
+    </div>
+    <div id="login" class="modal hide fade" tabindex="=1" role="dialog" aria-labelledby="loginLabel" aria-hidden="true">
+        <div class="modal-header">
+            <h3 id="loginLabel">Sign In</h3>
+        </div>
+        <div class="modal-body">
+            <form class="form-horizontal">
+                <div class="control-group">
+                    <label class="control-label" for="inputUsername">Username</label>
+                    <div class="controls">
+                        <input data-bind="value: username" type="text" id="inputUsername" placeholder="Username">
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="inputPassword">Password</label>
+                    <div class="controls">
+                        <input data-bind="value: password" type="password" id="inputPassword" placeholder="Password">
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button data-bind="click: login" class="btn btn-primary" data-dismiss="modal" aria-hidden="true">Sign In</button>
+        </div>
+    </div>
+    <script type="text/javascript">
+        function UsersViewModel() {
+            var self = this;
+            //self.authenticationURI = 'http://localhost:8080/api/authenticate';
+            //self.usersURI = 'http://localhost:8080/api/users';
+            self.authenticationURI = 'https://is2-token-authentication.herokuapp.com/api/authenticate';
+            self.usersURI = 'https://is2-token-authentication.herokuapp.com/api/users';
+            self.username = ko.observable("unsigned user");
+            self.token = "";
+            self.users = ko.observableArray();
+            self.ajax = function(uri, method, data) {
+                return fetch(uri,
+                {
+                    'method': method, 
+                    'body': JSON.stringify(data),
+                    'headers': {'Content-Type':'application/json', 'x-access-token': self.token}
+                })
+                .then((resp) => resp.json())
+            }
+            self.updateUser = function(user, newUser) {
+                var i = self.users.indexOf(user);
+                self.users()[i].uri(self.usersURI + '/' + newUser._id);
+                self.users()[i].name(newUser.name);
+                self.users()[i].password(newUser.password);
+                self.users()[i].admin(newUser.admin);
+            }
+            self.beginAdd = function() {
+                $('#add').modal('show');
+            }
+            self.add = function(user) {
+                self.ajax(self.usersURI, 'POST', user).then(function(data) {
+                    self.users.push({
+                        uri: ko.observable(self.usersURI + '/' + data._id),
+                        name: ko.observable(data.name),
+                        password: ko.observable(data.password),
+                        admin: ko.observable(data.admin)
+                    });
+                });
+            }
+            self.beginEdit = function(user) {
+                editUserViewModel.setUser(user);
+                $('#edit').modal('show');
+            }
+            self.edit = function(user, data) {
+                self.ajax(user.uri(), 'PUT', data).then(function(res) {
+                    self.updateUser(user, res);
+                });
+            }
+            self.remove = function(user) {
+                self.ajax(user.uri(), 'DELETE').then(function() {
+                    self.users.remove(user);
+                });
+            }
+            self.unsetAdmin = function(user) {
+                self.ajax(user.uri(), 'PUT', { admin: false }).then(function(res) {
+                    self.updateUser(user, res);
+                });
+            }
+            self.setAdmin = function(user) {
+                self.ajax(user.uri(), 'PUT', { admin: true })
+                .then(function(res) {
+                    console.log(res);
+                    self.updateUser(user, res);
+                });
+            }
+            self.refresh = function() {
+                self.users();
+                fetch(self.usersURI, { headers: {'x-access-token': self.token} })
+                .then((resp) => resp.json()) // Transform the data into json
+                .then((data) => {
+                    for (var i = 0; i < data.length; i++) {
+                        self.users.push({
+                            uri: ko.observable(self.usersURI + '/' + data[i]._id),
+                            name: ko.observable(data[i].name),
+                            password: ko.observable(data[i].password),
+                            admin: ko.observable(data[i].admin)
+                        });
+                    }
+                });
+            }
+            self.beginLogin = function() {
+                $('#login').modal('show');
+            }
+            self.login = function(user, password) {
+                fetch(self.authenticationURI,
+                { 
+                    method: 'POST', 
+                    body: 'name=' + user + '&password=' + password,
+                    headers: {'Content-Type':'application/x-www-form-urlencoded'}
+                })
+                .then((resp) => resp.json()) // Transform the data into json
+                .then((data) => {
+                    self.token = '';
+                    if(data.success == false) {
+                        self.beginLogin();
+                        console.log('Not authenticated! token is: ' + self.token);
+                        return Promise.reject('Not authenticated!'); //equal to: return new Promise((resolve, reject) => reject('Not authenticated!') );
+                    }
+                    self.token = data.token;
+                    self.username(user);
+                    console.log('authenticated! token is: ' + self.token);
+                })
+                .then(self.refresh)
+            }
+            self.logout = function() {
+                self.token = '';
+                self.username('unsigned user');
+                self.beginLogin();
+            }
+            
+            self.beginLogin();
+        }
+        function AddUserViewModel() {
+            var self = this;
+            self.name = ko.observable();
+            self.password = ko.observable();
+ 
+            self.addUser = function() {
+                $('#add').modal('hide');
+                usersViewModel.add({
+                    name: self.name(),
+                    password: self.password()
+                });
+                self.name("");
+                self.password("");
+            }
+        }
+        function EditUserViewModel() {
+            var self = this;
+            self.name = ko.observable();
+            self.password = ko.observable();
+            self.admin = ko.observable();
+ 
+            self.setUser = function(user) {
+                self.user = user;
+                self.name(user.name());
+                self.password(user.password());
+                self.admin(user.admin());
+                $('edit').modal('show');
+            }
+ 
+            self.editUser = function() {
+                $('#edit').modal('hide');
+                usersViewModel.edit(self.user, {
+                    name: self.name(),
+                    password: self.password() ,
+                    admin: self.admin()
+                });
+            }
+        }
+        function LoginViewModel() {
+            var self = this;
+            self.username = ko.observable();
+            self.password = ko.observable();
+ 
+            self.login = function() {
+                $('#login').modal('hide');
+                usersViewModel.login(self.username(), self.password());
+            }
+        }
+        
+        var usersViewModel = new UsersViewModel();
+        var addUserViewModel = new AddUserViewModel();
+        var editUserViewModel = new EditUserViewModel();
+        var loginViewModel = new LoginViewModel();
+        ko.applyBindings(usersViewModel, $('#main')[0]);
+        ko.applyBindings(addUserViewModel, $('#add')[0]);
+        ko.applyBindings(editUserViewModel, $('#edit')[0]);
+        ko.applyBindings(loginViewModel, $('#login')[0]);
+    </script>
+</body>
+</html>

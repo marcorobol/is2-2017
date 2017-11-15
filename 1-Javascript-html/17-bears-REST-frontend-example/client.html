@@ -131,8 +131,8 @@
                     });
                 }
             }).fail(function(jqXHR) {
-                if (jqXHR.status == 403)
-                    setTimeout(self.beginLogin, 500);
+                console.log('error ' + jqXHR.status);
+                alert('error ' + jqXHR.status);
             });
             
         }
